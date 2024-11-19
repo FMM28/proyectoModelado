@@ -8,7 +8,6 @@
 </head>
 <body>
     <div class="container">
-        <!-- Formulario -->
         <div class="form-container">
             <h1>Simulación de la Distribución de Temperatura en la Placa</h1>
 
@@ -26,31 +25,33 @@
                 <input type="number" name="Ny" value="50"><br><br>
                 
                 <label for="alpha">Difusividad térmica (alpha): </label>
-                <input type="number" step="0.0001" name="alpha" value="1e-4"><br><br>
+                <input type="number" step="0.00001" name="alpha" value="1e-4"><br><br>
 
                 <label for="dt">Paso temporal (s): </label>
                 <input type="number" step="0.01" name="dt" value="0.1"><br><br>
 
-                <label for="time_steps">Número de pasos de tiempo: </label>
-                <input type="number" name="time_steps" value="200"><br><br>
+                <label for="frames">Número de pasos de tiempo: </label>
+                <input type="number" name="frames" value="200"><br><br>
 
-                <label for="source_temperature">Temperatura de la fuente de calor (K): </label>
-                <input type="number" name="source_temperature" value="600"><br><br>
+                <label for="tFuente">Temperatura de la fuente de calor (K): </label>
+                <input type="number" name="tFuente" value="600"><br><br>
 
-                <label for="T_ambiente">Temperatura ambiente (K): </label>
-                <input type="number" name="T_ambiente" value="300"><br><br>
+                <label for="tAmbiente">Temperatura ambiente (K): </label>
+                <input type="number" name="tAmbiente" value="300"><br><br>
 
-                <label for="x_source">Posición X de la fuente de calor: </label>
-                <input type="number" step="0.01" name="x_source" value="0.5"><br><br>
+                <label for="tInicial">Temperatura inicial (K): </label>
+                <input type="number" name="tInicial" value="300"><br><br>
 
-                <label for="y_source">Posición Y de la fuente de calor: </label>
-                <input type="number" step="0.01" name="y_source" value="0.5"><br><br>
+                <label for="fuenteX">Posición X de la fuente de calor: </label>
+                <input type="number" step="0.01" name="fuenteX" value="0.5"><br><br>
+
+                <label for="fuenteY">Posición Y de la fuente de calor: </label>
+                <input type="number" step="0.01" name="fuenteY" value="0.5"><br><br>
 
                 <button type="submit">Generar Simulación</button>
             </form>
         </div>
 
-        <!-- Animación -->
         <div class="animation-container">
             <h2>Animación de la Simulación</h2>
             <img src="{{ url_for('static', filename='animacion.gif') }}" alt="Simulación de Temperatura">
