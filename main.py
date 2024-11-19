@@ -65,6 +65,19 @@ app = Flask(__name__)
 @app.route("/", methods=["GET", "POST"])
 def index():
     
+    Lx = 1.0
+    Ly = 1.0
+    Nx = 50
+    Ny = 50
+    alpha = 1e-4
+    dt = 0.1
+    frames = 200
+    tFuente = 600
+    tAmbiente = 300
+    tInicial = 300
+    fuenteX = 0.5
+    fuenteY = 0.5
+    
     if request.method == "POST":
         # Obtener variables del formulario
         Lx = float(request.form["Lx"])
@@ -81,10 +94,8 @@ def index():
         fuenteY = float(request.form["fuenteY"])
 
         simular(Lx, Ly, Nx, Ny, alpha, dt, frames, tFuente, tAmbiente, tInicial, fuenteX, fuenteY)
-        
-        return redirect(url_for('index'))
 
-    return render_template("index.html")
+    return render_template("index.html", Lx=Lx, Ly=Ly, Nx=Nx, Ny=Ny, alpha=alpha, dt=dt, frames=frames, tFuente=tFuente, tAmbiente=tAmbiente, tInicial=tInicial, fuenteX=fuenteX, fuenteY=fuenteY)
 
 if __name__ == "__main__":
     app.run('0.0.0.0', 8888, debug=True)

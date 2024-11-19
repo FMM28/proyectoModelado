@@ -13,40 +13,40 @@
 
             <form method="POST">
                 <label for="Lx">Longitud en X (m): </label>
-                <input type="number" step="0.01" name="Lx" value="1.0"><br><br>
+                <input type="number" step="0.01" name="Lx" value="{{ Lx }}"><br><br>
                 
                 <label for="Ly">Longitud en Y (m): </label>
-                <input type="number" step="0.01" name="Ly" value="1.0"><br><br>
+                <input type="number" step="0.01" name="Ly" value="{{ Ly }}"><br><br>
 
                 <label for="Nx">Puntos en X: </label>
-                <input type="number" name="Nx" value="50"><br><br>
+                <input type="number" name="Nx" value="{{ Nx }}"><br><br>
                 
                 <label for="Ny">Puntos en Y: </label>
-                <input type="number" name="Ny" value="50"><br><br>
+                <input type="number" name="Ny" value="{{ Ny }}"><br><br>
                 
                 <label for="alpha">Difusividad térmica (alpha): </label>
-                <input type="number" step="0.00001" name="alpha" value="1e-4"><br><br>
+                <input type="number" step="0.00001" name="alpha" value="{{ alpha }}"><br><br>
 
                 <label for="dt">Paso temporal (s): </label>
-                <input type="number" step="0.01" name="dt" value="0.1"><br><br>
+                <input type="number" step="0.01" name="dt" value="{{ dt }}"><br><br>
 
                 <label for="frames">Número de pasos de tiempo: </label>
-                <input type="number" name="frames" value="200"><br><br>
+                <input type="number" name="frames" value="{{ frames }}"><br><br>
 
                 <label for="tFuente">Temperatura de la fuente de calor (K): </label>
-                <input type="number" name="tFuente" value="600"><br><br>
+                <input type="number" name="tFuente" value="{{ tFuente }}"><br><br>
 
                 <label for="tAmbiente">Temperatura ambiente (K): </label>
-                <input type="number" name="tAmbiente" value="300"><br><br>
+                <input type="number" name="tAmbiente" value="{{ tAmbiente }}"><br><br>
 
                 <label for="tInicial">Temperatura inicial (K): </label>
-                <input type="number" name="tInicial" value="300"><br><br>
+                <input type="number" name="tInicial" value="{{ tInicial }}"><br><br>
 
                 <label for="fuenteX">Posición X de la fuente de calor: </label>
-                <input type="number" step="0.01" name="fuenteX" value="0.5"><br><br>
+                <input type="number" step="0.01" name="fuenteX" value="{{ fuenteX }}"><br><br>
 
                 <label for="fuenteY">Posición Y de la fuente de calor: </label>
-                <input type="number" step="0.01" name="fuenteY" value="0.5"><br><br>
+                <input type="number" step="0.01" name="fuenteY" value="{{ fuenteY }}"><br><br>
 
                 <button type="submit">Generar Simulación</button>
             </form>
