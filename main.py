@@ -1,70 +1,52 @@
-import matplotlib
-matplotlib.use('TkAgg')
-
 import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation, PillowWriter
-from flask import Flask, render_template, request, redirect, url_for
+from matplotlib.animation import FuncAnimation
+from flask import Flask, render_template, request
+from IPython.display import HTML
 
 def simular(Lx=1.0, Ly=1.0, Nx=50, Ny=50, alpha=1e-4, dt=0.1, frames=200, tFuente=600, tAmbiente=300, tInicial=300, fuenteX=0.5, fuenteY=0.5):
-    
-    # Función para actualizar las temperaturas
     def actualizaTemperatura(malla):
         nuevaMalla = [row[:] for row in malla]
-
         for x in range(1, Nx-1):
             for y in range(1, Ny-1):
                 nuevaMalla[x][y] = malla[x][y] + r_x * (malla[x+1][y] + malla[x-1][y] - 2 * malla[x][y]) + r_y * (malla[x][y+1] + malla[x][y-1] - 2 * malla[x][y])
-
-        # Aplicar la fuente de calor
         nuevaMalla[fuenteX][fuenteY] = tFuente
-
         return nuevaMalla
     
-    # Función de animación
     def animar(frame):
         nonlocal malla
         malla = actualizaTemperatura(malla)
         im.set_data(malla)
         return [im]
     
-    # Calcular paso espacial y coeficiente de estabilidad
     dx = Lx / (Nx - 1)
     dy = Ly / (Ny - 1)
-    r_x = alpha * dt / dx**2  # Coeficiente en la dirección x
-    r_y = alpha * dt / dy**2  # Coeficiente en la dirección y
-
-    # Inicialización de la malla
+    r_x = alpha * dt / dx**2
+    r_y = alpha * dt / dy**2
     malla = [[tInicial for _ in range(Ny)] for _ in range(Nx)]
-
-    # Condiciones de frontera: Temperatura ambiente en los bordes
     for i in range(Nx):
-        malla[i][0] = tAmbiente  # Borde izquierdo
-        malla[i][Ny-1] = tAmbiente  # Borde derecho
+        malla[i][0] = tAmbiente
+        malla[i][Ny-1] = tAmbiente
     for j in range(Ny):
-        malla[0][j] = tAmbiente  # Borde superior
-        malla[Nx-1][j] = tAmbiente  # Borde inferior
-
-    # Fuente de calor
-    fuenteX = int(fuenteX * (Nx - 1))  # Ajustar la fuente a las dimensiones de la malla
+        malla[0][j] = tAmbiente
+        malla[Nx-1][j] = tAmbiente
+    fuenteX = int(fuenteX * (Nx - 1))
     fuenteY = int(fuenteY * (Ny - 1))
-
-    # Configuración de la animación
+    
     fig, ax = plt.subplots()
     im = ax.imshow(malla, cmap='coolwarm', origin='lower', extent=[0, Lx, 0, Ly], vmin=0, vmax=1000)
     plt.colorbar(im, ax=ax, label='Temperatura (K)')
 
     ani = FuncAnimation(fig, animar, frames=frames, interval=50, blit=True)
 
-    # Guardar la animación como archivo GIF
-    ani.save("static/animacion.gif", writer=PillowWriter(fps=20))
-
-# Código
+    html_animation = HTML(ani.to_jshtml())  # Genera el HTML para la animación
+    plt.close(fig)
+    
+    return html_animation.data 
 
 app = Flask(__name__)
 
 @app.route("/", methods=["GET", "POST"])
 def index():
-    
     Lx = 1.0
     Ly = 1.0
     Nx = 50
@@ -77,9 +59,9 @@ def index():
     tInicial = 300
     fuenteX = 0.5
     fuenteY = 0.5
-    
+    animacion_html = ""
+
     if request.method == "POST":
-        # Obtener variables del formulario
         Lx = float(request.form["Lx"])
         Ly = float(request.form["Ly"])
         Nx = int(request.form["Nx"])
@@ -93,9 +75,11 @@ def index():
         fuenteX = float(request.form["fuenteX"])
         fuenteY = float(request.form["fuenteY"])
 
-        simular(Lx, Ly, Nx, Ny, alpha, dt, frames, tFuente, tAmbiente, tInicial, fuenteX, fuenteY)
+        animacion_html = simular(Lx, Ly, Nx, Ny, alpha, dt, frames, tFuente, tAmbiente, tInicial, fuenteX, fuenteY)
 
-    return render_template("index.html", Lx=Lx, Ly=Ly, Nx=Nx, Ny=Ny, alpha=alpha, dt=dt, frames=frames, tFuente=tFuente, tAmbiente=tAmbiente, tInicial=tInicial, fuenteX=fuenteX, fuenteY=fuenteY)
+    return render_template("index.html", Lx=Lx, Ly=Ly, Nx=Nx, Ny=Ny, alpha=alpha, dt=dt, frames=frames, 
+                           tFuente=tFuente, tAmbiente=tAmbiente, tInicial=tInicial, fuenteX=fuenteX, fuenteY=fuenteY, 
+                           animacion_html=animacion_html)
 
 if __name__ == "__main__":
     app.run('0.0.0.0', 8888, debug=True)

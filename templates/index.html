@@ -54,7 +54,7 @@
 
         <div class="animation-container">
             <h2>Animación de la Simulación</h2>
-            <img src="{{ url_for('static', filename='animacion.gif') }}" alt="Simulación de Temperatura">
+            {{ animacion_html|safe }}
         </div>
     </div>
 </body>
